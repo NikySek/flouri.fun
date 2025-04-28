@@ -1,1 +1,31 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Moje VR Video (normální)</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+</head>
+<body>
+  <a-scene>
+    <a-assets>
+      <video id="vrVideo" src="moje-video.mp4" autoplay loop="true" playsinline crossorigin="anonymous"></video>
+    </a-assets>
 
+    <!-- Každé oko uvidí jen svoji polovinu videa -->
+    <a-videosphere src="#vrVideo" stereo="left-right" split-half="true"></a-videosphere>
+  </a-scene>
+
+  <script>
+    // A-Frame komponenta pro správné dělení videa na levé/pravé oko
+    AFRAME.registerComponent('split-half', {
+      init: function () {
+        var material = this.el.getObject3D('mesh').material;
+        if (material.map) {
+          material.map.repeat.set(0.5, 1); // Pouze polovina obrazu
+          material.map.offset.set(0, 0);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
